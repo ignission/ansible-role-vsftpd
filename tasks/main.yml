@@ -17,9 +17,17 @@
     mode:  00640
     force: no
 
-- name: Allow root login.
+- name: Edit user_list in order to login by the root user.
   lineinfile:
-    dest: /etc/vsftpd/ftpusers
+    dest: "{{ vsftpd_userlist_file }}"
+    state: present
+    regexp: 'root'
+    line: '#root'
+  when: "{{ vsftpd_allow_root_login }}"
+
+- name: Edit ftpusers in order to login by the root user.
+  lineinfile:
+    dest: "{{ vsftpd_chroot_list_file }}"
     state: present
     regexp: 'root'
     line: '#root'
