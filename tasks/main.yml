@@ -25,9 +25,17 @@
     line: '#root'
   when: "{{ vsftpd_allow_root_login }}"
 
-- name: Edit ftpusers in order to login by the root user.
+- name: Edit chroot_list in order to login by the root user.
   lineinfile:
     dest: "{{ vsftpd_chroot_list_file }}"
+    state: present
+    regexp: 'root'
+    line: '#root'
+  when: "{{ vsftpd_allow_root_login }}"
+
+- name: Edit ftpusers in order to login by the root user.
+  lineinfile:
+    dest: /etc/vsftpd/ftpusers
     state: present
     regexp: 'root'
     line: '#root'
