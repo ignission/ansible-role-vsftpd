@@ -8,7 +8,31 @@
   with_items: "{{ vsftpd_packages }}"
 
 # configure
+- name: Touch deny user list file.
+  copy:
+    dest: "{{ vsftpd_chroot_list_file }}"
+    content: ""
+    owner: root
+    group: root
+    mode:  00640
+    force: no
 
+- name: Allow root login.
+  lineinfile:
+    dest: /etc/vsftpd/ftpusers
+    state: present
+    regexp: 'root'
+    line: '#root'
+  when: "{{ vsftpd_allow_root_login }}"
+
+- name: Place vsftpd configuration file in place.
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+    owner: root
+    group: root
+    mode: 00644
+  notify: restart vsftpd
 
 # service
 - name: Ensure vsftpd is started and enabled to start at boot.
