@@ -1,1 +1,5 @@
 ---
+vsftpd_packages:
+  - vsftpd
+  - ftp
+vsftpd_enablerepo: ""

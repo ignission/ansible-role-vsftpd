@@ -1,1 +1,15 @@
 ---
+# install
+- name: Ensure vsftpd packages are installed.
+  yum:
+    name: "{{ item }}"
+    state: latest
+    enablerepo: "{{ vsftpd_enablerepo }}"
+  with_items: "{{ vsftpd_packages }}"
+
+# configure
+
+
+# service
+- name: Ensure vsftpd is started and enabled to start at boot.
+  service: name=vsftpd state=started enabled=yes
