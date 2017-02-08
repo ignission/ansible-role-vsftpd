@@ -1,21 +1,16 @@
 ---
+# variable setup.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
 # install
 - name: Ensure vsftpd packages are installed.
-  yum:
-    name: "{{ item }}"
-    state: latest
-    enablerepo: "{{ vsftpd_enablerepo }}"
+  yum: name={{ item }} enablerepo={{ vsftpd_enablerepo }}
   with_items: "{{ vsftpd_packages }}"
 
 # configure
 - name: Touch deny user list file.
-  copy:
-    dest: "{{ vsftpd_chroot_list_file }}"
-    content: ""
-    owner: root
-    group: root
-    mode:  00640
-    force: no
+  copy: dest={{ vsftpd_chroot_list_file }} content="" mode=0640 force=no
 
 - name: Edit user_list in order to login by the root user.
   lineinfile:
@@ -42,12 +37,7 @@
   when: "{{ vsftpd_allow_root_login }}"
 
 - name: Place vsftpd configuration file in place.
-  template:
-    src: vsftpd.conf.j2
-    dest: /etc/vsftpd/vsftpd.conf
-    owner: root
-    group: root
-    mode: 00644
+  template: src=vsftpd.conf.j2 dest=/etc/vsftpd/vsftpd.conf
   notify: restart vsftpd
 
 # service

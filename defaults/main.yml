@@ -1,9 +1,4 @@
 ---
-vsftpd_packages:
-  - vsftpd
-  - ftp
-vsftpd_enablerepo: ""
-
 vsftpd_allow_root_login: false
 
 # vsftpd.conf
