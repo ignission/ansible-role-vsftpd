@@ -1,39 +1,38 @@
-# Ansible role: vsftpd
+Role Name
+=========
 
-## Requirements
-None.
+A brief description of the role goes here.
 
-## Role Variables
-|Key|Type|Description|Default|
-|:--|:---|:----------|:------|
-|vsftpd_allow_root_login|boolean||false|
-|vsftpd_allow_writeable_chroot|YES,NO||YES|
-|vsftpd_anonymous_enable|YES,NO||NO|
-|vsftpd_ascii_upload_enable|YES,NO||YES|
-|vsftpd_ascii_download_enable|YES,NO||YES|
-|vsftpd_chroot_local_user|YES,NO||YES|
-|vsftpd_chroot_list_enable|YES,NO||YES|
-|vsftpd_chroot_list_file|String||/etc/vsftpd/chroot_list|
-|vsftpd_ftpd_banner|String||Welcome to my FTP service.|
-|vsftpd_ls_recurse_enable|YES,NO||YES|
-|vsftpd_listen|YES,NO||YES|
-|vsftpd_listen_ipv6|YES,NO||NO|
-|vsftpd_seccomp_sandbox|YES,NO||NO|
-|vsftpd_userlist_enable|YES,NO||YES|
-|vsftpd_userlist_deny|YES,NO||YES|
-|vsftpd_userlist_file|String||/etc/vsftpd/user_list|
-|vsftpd_use_localtime|YES,NO||YES|
-|vsftpd_xferlog_file|String||/var/log/vsftpd.log|
-|vsftpd_pasv_min_port|Integer||6970|
-|vsftpd_pasv_max_port|Integer||6980|
+Requirements
+------------
 
-## Dependencies
-None.
+Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-## Example playbook
+Role Variables
+--------------
 
-```yaml
-- hosts: all
-  roles:
-    - role: vsftpd
-```
+A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+
+Dependencies
+------------
+
+A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+
+Example Playbook
+----------------
+
+Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+
+    - hosts: servers
+      roles:
+         - { role: username.rolename, x: 42 }
+
+License
+-------
+
+BSD
+
+Author Information
+------------------
+
+An optional section for the role authors to include contact information, or a website (HTML is not allowed).
