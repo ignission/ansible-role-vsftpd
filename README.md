@@ -37,7 +37,7 @@ vsftpd_chroot_list_file:          /etc/vsftpd/chroot_list
 vsftpd_connect_from_port_20:    NO
 vsftpd_connect_timeout:           20
 vsftpd_data_connection_timeout: 300
-vsftpd_ftpd_banner:             Spurrier family only.
+vsftpd_ftpd_banner:             Private service. Authorised access only is permitted via this service.
 vsftpd_hide_ids:                YES
 vsftpd_idle_session_timeout:    120
 vsftpd_ls_recurse_enable:   NO
