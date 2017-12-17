@@ -13,10 +13,10 @@ anonymous_enable={{ vsftpd_anonymous_enable }}
 #
 # Uncomment this to allow local users to log in.
 # When SELinux is enforcing check for SE bool ftp_home_dir
-local_enable=YES
+local_enable={{ vsftpd_local_enable }}
 #
 # Uncomment this to enable any form of FTP write command.
-write_enable=YES
+write_enable={{ vsftpd_write_enable }}
 #
 # Default umask for local users is 077. You may wish to change this to 022,
 # if your users expect that (022 is used by most other ftpd's)
@@ -26,11 +26,14 @@ local_umask=022
 # has an effect if the above global write enable is activated. Also, you will
 # obviously need to create a directory writable by the FTP user.
 # When SELinux is enforcing check for SE bool allow_ftpd_anon_write, allow_ftpd_full_access
-#anon_upload_enable=YES
+anon_upload_enable={{ vsftpd_anon_upload_enable }}
 #
 # Uncomment this if you want the anonymous FTP user to be able to create
 # new directories.
-#anon_mkdir_write_enable=YES
+anon_mkdir_write_enable={{ vsftpd_anon_mkdir_write_enable }}
+anon_other_write_enable={{ vsftpd_anon_other_write_enable }}
+anon_root={{ vsftpd_anon_root }}
+anon_world_readable_only={{ vsftpd_anon_world_readable_only }}
 #
 # Activate directory messages - messages given to remote users when they
 # go into a certain directory.
@@ -40,7 +43,7 @@ dirmessage_enable=YES
 xferlog_enable=YES
 #
 # Make sure PORT transfer connections originate from port 20 (ftp-data).
-connect_from_port_20=YES
+connect_from_port_20={{ vsftpd_connect_from_port_20 }}
 #
 # If you want, you can arrange for uploaded anonymous files to be owned by
 # a different user. Note! Using "root" for uploaded files is not
@@ -57,10 +60,10 @@ xferlog_file={{ vsftpd_xferlog_file }}
 xferlog_std_format=YES
 #
 # You may change the default value for timing out an idle session.
-#idle_session_timeout=600
+idle_session_timeout={{ vsftpd_idle_session_timeout }}
 #
 # You may change the default value for timing out a data connection.
-#data_connection_timeout=120
+data_connection_timeout={{ vsftpd_data_connection_timeout }}
 #
 # It is recommended that you define on your system a unique user which the
 # ftp server can use as a totally isolated and unprivileged user.
@@ -69,7 +72,7 @@ xferlog_std_format=YES
 # Enable this and the server will recognise asynchronous ABOR requests. Not
 # recommended for security (the code is non-trivial). Not enabling it,
 # however, may confuse older FTP clients.
-#async_abor_enable=YES
+async_abor_enable={{ vsftpd_async_abor_enable }}
 #
 # By default the server will pretend to allow ASCII mode but in fact ignore
 # the request. Turn on the below options to have the server actually do ASCII
@@ -133,4 +136,13 @@ allow_writeable_chroot={{ vsftpd_allow_writeable_chroot }}
 pasv_min_port={{ vsftpd_pasv_min_port }}
 pasv_max_port={{ vsftpd_pasv_max_port }}
 
-tcp_wrappers=YES
+tcp_wrappers={{ vsftpd_tcp_wrappers }}
+
+max_clients={{ vsftpd_max_clients }}
+max_per_ip={{ vsftpd_max_per_ip }}
+hide_ids={{ vsftpd_hide_ids }}
+one_process_model={{ vsftpd_one_process_model }}
+accept_timeout={{ vsftpd_accept_timeout }}
+connect_timeout={{ vsftpd_connect_timeout }}
+anon_max_rate={{ vsftpd_anon_max_rate }}
+anon_umask={{ vsftpd_anon_umask }}

@@ -1,12 +1,12 @@
 ---
-# variable setup.
-- name: Include OS-specific variables.
-  include_vars: "{{ ansible_os_family }}.yml"
 
 # install
-- name: Ensure vsftpd packages are installed.
-  yum: name={{ item }} enablerepo={{ vsftpd_enablerepo }}
-  with_items: "{{ vsftpd_packages }}"
+- name: Ensure role dependencies are installed.
+  package:
+    name:   "{{ item }}"
+  with_items:
+    - vsftpd
+    - policycoreutils-python
 
 # configure
 - name: Touch deny user list file.
@@ -18,7 +18,7 @@
     state: present
     regexp: 'root'
     line: '#root'
-  when: "{{ vsftpd_allow_root_login }}"
+  when: vsftpd_allow_root_login
 
 - name: Edit ftpusers in order to login by the root user.
   lineinfile:
@@ -26,7 +26,7 @@
     state: present
     regexp: 'root'
     line: '#root'
-  when: "{{ vsftpd_allow_root_login }}"
+  when: vsftpd_allow_root_login
 
 - name: Edit chroot_list allow to go up to the hierarchy of the top.
   lineinfile:
@@ -34,12 +34,52 @@
     state: present
     regexp: 'root'
     line: 'root'
-  when: "{{ vsftpd_allow_root_login }}"
+  when: vsftpd_allow_root_login
+
+- name: "firewalld permits inbound FTP."
+  firewalld:
+    service:       "{{ item }}"
+    permanent:  true
+    state:      enabled
+    immediate:  yes
+  with_items:
+    - ftp
+
+- name: "Create directories that need to be writeable."
+  file:
+    path:   "{{ item }}"
+    owner:  root
+    group:  ftp
+    mode:   0775
+    setype: public_content_rw_t
+    state:  directory
+  with_items: "{{ vsftpd_writable_dirs }}"
+  when: vsftpd_write_enable
+
+- name: "Set SELinux context for vsftpd to write files."
+  sefcontext:
+    target:   "{{ item }}(/.*)?"
+    setype:   public_content_rw_t
+    state:    present
+  with_items: "{{ vsftpd_writable_dirs }}"
+  when: vsftpd_write_enable
+
+- name: "Enable the SELinux Boolean: allow_ftpd_anon_write"
+  seboolean:
+    name:       allow_ftpd_anon_write
+    state:      yes
+    persistent: yes
+  when: vsftpd_anon_upload_enable
+
+- name: "Enable the SELinux Boolean: ftpd_use_passive_mode"
+  seboolean:
+    name:       ftpd_use_passive_mode
+    state:      yes
+    persistent: yes
 
 - name: Place vsftpd configuration file in place.
   template: src=vsftpd.conf.j2 dest=/etc/vsftpd/vsftpd.conf
   notify: restart vsftpd
 
-# service
 - name: Ensure vsftpd is started and enabled to start at boot.
   service: name=vsftpd state=started enabled=yes
